@@ -11,7 +11,7 @@ import {
   unbondMixNode as unbondMixNodeRequest,
 } from '../requests';
 
-// TODO temporary types for bonded mixnode data
+// TODO temporary type for bonded mixnode data
 export interface BondedMixnode {
   key: string;
   ip: string;
@@ -24,7 +24,7 @@ export interface BondedMixnode {
   delegators: number;
 }
 
-// TODO temporary types for bonded gateway data
+// TODO temporary type for bonded gateway data
 export interface BondedGateway {
   key: string;
   ip: string;
@@ -89,7 +89,19 @@ export const BondingContextProvider = ({
   };
 
   const refresh = useCallback(async () => {
+    const bounded = null;
     // TODO fetch bondedMixnode and bondedGatway via tauri dedicated requests
+    /* try {
+      bounded = await fetchBondingData();
+    } catch (e: any) {
+      throw new Error(e);
+    } */
+    if (bounded && 'stake' in bounded) {
+      setBondedMixnode(bounded);
+    }
+    if (bounded && !('stake' in bounded)) {
+      setBondedGateway(bounded);
+    }
     setIsLoading(false);
   }, [network]);
 
