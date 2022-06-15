@@ -1,6 +1,15 @@
 import { TransactionExecuteResult } from '@nymproject/types';
-import React, { createContext, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { Network } from 'src/types';
+import { TBondGatewayArgs, TBondMixNodeArgs } from 'src/types';
+import {
+  bondGateway as bondGatewayRequest,
+  bondMixNode as bondMixNodeRequest,
+  claimOperatorRewards,
+  compoundOperatorRewards,
+  unbondGateway as unbondGatewayRequest,
+  unbondMixNode as unbondMixNodeRequest,
+} from '../requests';
 
 export type TBondingContext = {
   isLoading: boolean;
@@ -8,8 +17,8 @@ export type TBondingContext = {
   bondedMixnode?: any; // TODO fix up type
   bondedGateway?: any; // TODO fix up type
   refresh: () => Promise<void>;
-  bondMixnode: (data: any) => Promise<TransactionExecuteResult>;
-  bondGateway: (data: any) => Promise<TransactionExecuteResult>;
+  bondMixnode: (data: TBondMixNodeArgs) => Promise<TransactionExecuteResult>;
+  bondGateway: (data: TBondGatewayArgs) => Promise<TransactionExecuteResult>;
   unbondMixnode: () => Promise<TransactionExecuteResult>;
   unbondGateway: () => Promise<TransactionExecuteResult>;
   redeemRewards: () => Promise<TransactionExecuteResult>;
@@ -39,9 +48,13 @@ export const BondingContext = createContext<TBondingContext>({
   },
 });
 
-export const BondingContextProvider: FC<{
+export const BondingContextProvider = ({
+  network,
+  children,
+}: {
   network?: Network;
-}> = ({ network, children }) => {
+  children?: React.ReactNode;
+}): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string>();
 
@@ -53,10 +66,39 @@ export const BondingContextProvider: FC<{
     refresh();
   }, [network]);
 
+  const bondMixnode = async (data: TBondMixNodeArgs) => {
+    // TODO some logic
+    return bondMixNodeRequest(data);
+  };
+  const bondGateway = async (data: TBondGatewayArgs) => {
+    // TODO some logic
+    return bondGatewayRequest(data);
+  };
+  const unbondMixnode = async () => {
+    // TODO some logic
+    return unbondMixNodeRequest();
+  };
+  const unbondGateway = async () => {
+    // TODO some logic
+    return unbondGatewayRequest();
+  };
+  const redeemRewards = async () => {
+    // TODO some logic
+    return claimOperatorRewards();
+  };
+  const compoundRewards = async () => {
+    // TODO some logic
+    return compoundOperatorRewards();
+  };
+
   const memoizedValue = useMemo(
     () => ({
       isLoading,
       error,
+      bondMixnode,
+      bondGateway,
+      unbondMixnode,
+      unbondGateway,
       refresh,
       redeemRewards,
       compoundRewards,
