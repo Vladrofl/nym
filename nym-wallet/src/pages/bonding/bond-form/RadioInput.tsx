@@ -42,7 +42,13 @@ export const RadioInput = ({
   });
   return (
     <FormControl ref={ref}>
-      <FormLabel id={`radio-group-label-${name}`} {...muiFormLabelProps}>
+      <FormLabel
+        id={`radio-group-label-${name}`}
+        sx={{
+          color: 'text.main',
+        }}
+        {...muiFormLabelProps}
+      >
         {label}
       </FormLabel>
       <RadioGroup
@@ -50,10 +56,13 @@ export const RadioInput = ({
         onChange={onChange}
         aria-labelledby={`radio-group-label-${name}`}
         name={name}
+        sx={{
+          color: 'text.main',
+        }}
         {...muiRadioGroupProps}
       >
         {options.map(({ value: v, label: l }) => (
-          <FormControlLabel value={v} control={<Radio {...muiRadioProps} />} label={l} />
+          <FormControlLabel value={v} control={<Radio color="default" {...muiRadioProps} />} label={l} />
         ))}
       </RadioGroup>
     </FormControl>

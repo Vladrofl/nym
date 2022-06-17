@@ -1,8 +1,10 @@
+import { MajorCurrencyAmount } from '@nymproject/types';
+
 export type FormStep = 1 | 2 | 3;
 export type NodeType = 'mixnode' | 'gateway';
 
 export type ACTIONTYPE =
-  | { type: 'change_bond_type'; payload: 'mixnode' | 'gateway' }
+  | { type: 'change_bond_type'; payload: NodeType }
   | { type: 'set_node_data'; payload: NodeData }
   | { type: 'set_amount_data'; payload: AmountData }
   | { type: 'set_step'; payload: FormStep }
@@ -18,17 +20,16 @@ export interface NodeData {
   sphinxKey: string;
   signature: string;
   host: string;
+  location?: string;
   version: string;
   advancedOpt: boolean;
 }
 
-export interface MixnodeAmountData {
-  profitMargin: string;
-  amount: string;
+export interface AmountData {
+  amount: MajorCurrencyAmount;
+  tokenPool: string;
+  profitMargin?: number;
 }
-
-export type GatewayAmountData = Pick<MixnodeAmountData, 'amount'>;
-export type AmountData = MixnodeAmountData | GatewayAmountData;
 
 export interface BondState {
   showModal: boolean;

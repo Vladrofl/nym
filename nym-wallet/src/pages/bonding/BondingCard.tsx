@@ -3,6 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { NymCard } from '../../components';
 import { NodeIdentityModal } from './NodeIdentityModal';
 import { ACTIONTYPE, BondState, FormStep } from './types';
+import { AmountModal } from './AmountModal';
 
 const initialState: BondState = {
   showModal: false,
@@ -28,6 +29,8 @@ function reducer(state: BondState, action: ACTIONTYPE) {
       return { ...state, formStep: step >= 1 ? (step as FormStep) : 1 };
     case 'show_modal':
       return { ...state, showModal: true };
+    case 'close_modal':
+      return { ...state, showModal: false };
     case 'reset':
       return initialState;
     default:
@@ -73,6 +76,19 @@ export const BondingCard = () => {
           }}
           header="Bond"
           buttonText="Next"
+        />
+      )}
+      {formStep === 2 && showModal && (
+        <AmountModal
+          open={formStep === 2 && showModal}
+          onClose={() => dispatch({ type: 'reset' })}
+          onSubmit={async (data) => {
+            dispatch({ type: 'set_amount_data', payload: data });
+            // dispatch({ type: 'next_step' });
+          }}
+          header="Bond"
+          buttonText="Next"
+          nodeType={state.nodeData?.nodeType || 'mixnode'}
         />
       )}
     </NymCard>
