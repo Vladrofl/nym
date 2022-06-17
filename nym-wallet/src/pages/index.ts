@@ -10,3 +10,5 @@ export * from './settings';
 export * from './unbond';
 export * from './undelegate';
 export * from './delegation';
+export * from './bonding';
+
