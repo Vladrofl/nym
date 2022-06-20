@@ -111,12 +111,14 @@ pub fn execute(
             operator,
             delegator,
             mix_identity,
+            proxy,
         } => crate::rewards::transactions::try_compound_reward(
             deps,
             env,
             operator,
             delegator,
             mix_identity,
+            proxy,
         ),
         ExecuteMsg::UpdateRewardingValidatorAddress { address } => {
             try_update_rewarding_validator_address(deps, info, address)

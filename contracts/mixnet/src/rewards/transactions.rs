@@ -376,7 +376,9 @@ pub fn try_compound_reward(
     operator: Option<String>,
     delegator: Option<String>,
     mix_identity: Option<IdentityKey>,
+    proxy: Option<String>,
 ) -> Result<Response, ContractError> {
+    let proxy = proxy.and_then(|p| deps.api.addr_validate(&p).ok());
     if let Some(operator_address) = operator {
         let operator_address = deps.api.addr_validate(&operator_address)?;
         let reward = _try_compound_operator_reward(
@@ -384,7 +386,7 @@ pub fn try_compound_reward(
             deps.api,
             env.block.height,
             &operator_address,
-            None,
+            proxy,
         )?;
         Ok(
             Response::default().add_event(new_compound_operator_reward_event(
@@ -403,7 +405,7 @@ pub fn try_compound_reward(
             deps,
             delegator_address.as_str(),
             mix_identity.as_ref().unwrap(),
-            None,
+            proxy,
         )?;
         Ok(
             Response::default().add_event(new_compound_delegator_reward_event(

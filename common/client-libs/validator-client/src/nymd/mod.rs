@@ -920,6 +920,7 @@ impl<C> NymdClient<C> {
         operator: Option<String>,
         delegator: Option<String>,
         mix_identity: Option<IdentityKey>,
+        proxy: Option<String>,
         fee: Option<Fee>,
     ) -> (ExecuteMsg, Option<Fee>)
     where
@@ -930,6 +931,7 @@ impl<C> NymdClient<C> {
                 operator,
                 delegator,
                 mix_identity,
+                proxy,
             },
             fee,
         )
