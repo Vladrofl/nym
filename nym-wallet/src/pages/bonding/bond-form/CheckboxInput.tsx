@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Control, useController } from 'react-hook-form';
-import { Checkbox, CheckboxProps, FormControlLabel, FormControlLabelProps, FormGroup } from '@mui/material';
+import { Checkbox, CheckboxProps, FormControlLabel, FormControlLabelProps, FormGroup, SxProps } from '@mui/material';
 
 interface Props {
   name: string;
@@ -9,6 +9,7 @@ interface Props {
   defaultValue: boolean;
   muiCheckboxProps?: CheckboxProps;
   muiFormControlLabelProps?: FormControlLabelProps;
+  sx?: SxProps;
 }
 
 export const CheckboxInput = ({
@@ -18,6 +19,7 @@ export const CheckboxInput = ({
   label,
   muiCheckboxProps,
   muiFormControlLabelProps,
+  sx,
 }: Props) => {
   const {
     field: { onChange, onBlur, value, ref },
@@ -27,7 +29,7 @@ export const CheckboxInput = ({
     defaultValue,
   });
   return (
-    <FormGroup>
+    <FormGroup sx={sx}>
       <FormControlLabel
         control={
           <Checkbox

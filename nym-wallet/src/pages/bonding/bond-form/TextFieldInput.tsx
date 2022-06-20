@@ -1,18 +1,20 @@
 import * as React from 'react';
 import { Control, useController } from 'react-hook-form';
 import { SxProps, TextField, TextFieldProps } from '@mui/material';
+import { RegisterOptions } from 'react-hook-form/dist/types/validator';
 
 interface Props {
   name: string;
   label: string;
   placeholder?: string;
   control: Control<any>;
-  defaultValue: string;
+  defaultValue?: string;
   required?: boolean;
   error?: boolean;
   muiTextFieldProps?: TextFieldProps;
   helperText?: string;
   sx?: SxProps;
+  registerOptions?: RegisterOptions;
 }
 
 export const TextFieldInput = ({
@@ -24,6 +26,8 @@ export const TextFieldInput = ({
   muiTextFieldProps,
   required,
   error,
+  helperText,
+  registerOptions,
   sx,
 }: Props) => {
   const {
@@ -32,6 +36,7 @@ export const TextFieldInput = ({
     name,
     control,
     defaultValue,
+    rules: registerOptions,
   });
   return (
     <TextField
@@ -46,6 +51,7 @@ export const TextFieldInput = ({
       required={required}
       inputRef={ref}
       error={error}
+      helperText={helperText}
       {...muiTextFieldProps}
       sx={sx}
     />

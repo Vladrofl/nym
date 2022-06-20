@@ -31,16 +31,21 @@ export const NodeIdentityModal = ({ open, onClose, onSubmit, header, buttonText 
     control,
     getValues,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { errors },
   } = useForm<NodeData>({
     defaultValues: {
       nodeType: radioOptions[0].value,
       advancedOpt: false,
+      mixPort: 1789,
+      verlocPort: 1790,
+      httpApiPort: 8000,
+      clientsPort: 9000,
     },
     resolver: yupResolver(nodeSchema),
   });
 
   const nodeType = useWatch({ name: 'nodeType', control });
+  const advancedOpt = useWatch({ name: 'advancedOpt', control });
 
   const onSubmitForm = (data: NodeData) => {
     onSubmit(data);
@@ -54,7 +59,6 @@ export const NodeIdentityModal = ({ open, onClose, onSubmit, header, buttonText 
       header={header || 'Bond'}
       subHeader="Step 1/2"
       okLabel={buttonText || 'Next'}
-      okDisabled={!isValid}
     >
       <form>
         <RadioInput
@@ -72,6 +76,7 @@ export const NodeIdentityModal = ({ open, onClose, onSubmit, header, buttonText 
           label="Identity Key"
           placeholder="Identity Key"
           error={Boolean(errors.identityKey)}
+          helperText={errors.identityKey?.message}
           required
           muiTextFieldProps={{ fullWidth: true }}
           sx={{ mb: 2.5, mt: 1 }}
@@ -83,6 +88,7 @@ export const NodeIdentityModal = ({ open, onClose, onSubmit, header, buttonText 
           label="Sphinx Key"
           placeholder="Sphinx Key"
           error={Boolean(errors.sphinxKey)}
+          helperText={errors.sphinxKey?.message}
           required
           muiTextFieldProps={{ fullWidth: true }}
           sx={{ mb: 2.5 }}
@@ -94,6 +100,7 @@ export const NodeIdentityModal = ({ open, onClose, onSubmit, header, buttonText 
           label="Signature"
           placeholder="Signature"
           error={Boolean(errors.signature)}
+          helperText={errors.signature?.message}
           required
           muiTextFieldProps={{ fullWidth: true }}
           sx={{ mb: 2.5 }}
@@ -106,6 +113,7 @@ export const NodeIdentityModal = ({ open, onClose, onSubmit, header, buttonText 
             label="Location"
             placeholder="Location"
             error={Boolean(errors.location)}
+            helperText={errors.location?.message}
             required
             muiTextFieldProps={{ fullWidth: true }}
             sx={{ mb: 2.5 }}
@@ -119,6 +127,7 @@ export const NodeIdentityModal = ({ open, onClose, onSubmit, header, buttonText 
             label="Host"
             placeholder="Host"
             error={Boolean(errors.host)}
+            helperText={errors.host?.message}
             required
             muiTextFieldProps={{ fullWidth: true }}
             sx={{ mb: 2.5 }}
@@ -130,12 +139,72 @@ export const NodeIdentityModal = ({ open, onClose, onSubmit, header, buttonText 
             label="Version"
             placeholder="Version"
             error={Boolean(errors.version)}
+            helperText={errors.version?.message}
             required
             muiTextFieldProps={{ fullWidth: true }}
             sx={{ mb: 2.5 }}
           />
         </Stack>
-        <CheckboxInput name="advancedOpt" label="Use advanced options" control={control} defaultValue={false} />
+        <CheckboxInput
+          name="advancedOpt"
+          label="Use advanced options"
+          control={control}
+          defaultValue={false}
+          sx={{ mb: 2.5 }}
+        />
+        {advancedOpt && (
+          <Stack direction="row" spacing={1.5}>
+            <TextFieldInput
+              name="mixPort"
+              control={control}
+              label="Mix Port"
+              placeholder="Mix Port"
+              error={Boolean(errors.mixPort)}
+              helperText={errors.mixPort?.message && 'A valid port value is required'}
+              required
+              registerOptions={{ valueAsNumber: true }}
+              sx={{ mb: 2.5 }}
+            />
+            {nodeType === 'mixnode' ? (
+              <>
+                <TextFieldInput
+                  name="verlocPort"
+                  control={control}
+                  label="Verloc Port"
+                  placeholder="Verloc Port"
+                  error={Boolean(errors.verlocPort)}
+                  helperText={errors.verlocPort?.message && 'A valid port value is required'}
+                  required
+                  registerOptions={{ valueAsNumber: true }}
+                  sx={{ mb: 2.5 }}
+                />
+                <TextFieldInput
+                  name="httpApiPort"
+                  control={control}
+                  label="HTTP API Port"
+                  placeholder="HTTP API Port"
+                  error={Boolean(errors.httpApiPort)}
+                  helperText={errors.httpApiPort?.message && 'A valid port value is required'}
+                  required
+                  registerOptions={{ valueAsNumber: true }}
+                  sx={{ mb: 2.5 }}
+                />
+              </>
+            ) : (
+              <TextFieldInput
+                name="clientsPort"
+                control={control}
+                label="client WS API Port"
+                placeholder="client WS API Port"
+                error={Boolean(errors.clientsPort)}
+                helperText={errors.clientsPort?.message && 'A valid port value is required'}
+                required
+                registerOptions={{ valueAsNumber: true }}
+                sx={{ mb: 2.5 }}
+              />
+            )}
+          </Stack>
+        )}
       </form>
     </SimpleModal>
   );

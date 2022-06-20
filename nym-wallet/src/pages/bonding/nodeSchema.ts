@@ -1,5 +1,5 @@
-import { boolean, lazy, mixed, object, string } from 'yup';
-import { isValidHostname, validateKey, validateLocation, validateVersion } from '../../utils';
+import { boolean, lazy, mixed, number, object, string } from 'yup';
+import { isValidHostname, validateKey, validateLocation, validateRawPort, validateVersion } from '../../utils';
 import { NodeType } from './types';
 
 export const nodeSchema = object().shape({
@@ -37,7 +37,7 @@ export const nodeSchema = object().shape({
     return mixed().notRequired();
   }),
 
-  /*  mixPort: number()
+  mixPort: number()
     .required('A mixport is required')
     .test('valid-mixport', 'A valid mixport is required', (value) => (value ? validateRawPort(value) : false)),
 
@@ -51,5 +51,5 @@ export const nodeSchema = object().shape({
 
   clientsPort: number()
     .required('A clients port is required')
-    .test('valid-clients', 'A valid clients port is required', (value) => (value ? validateRawPort(value) : false)), */
+    .test('valid-clients', 'A valid clients port is required', (value) => (value ? validateRawPort(value) : false)),
 });

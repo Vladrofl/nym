@@ -9,6 +9,7 @@ import { AppContext } from '../../context';
 import { amountSchema } from './amountSchema';
 import { TokenPoolSelector } from '../../components';
 import { TextFieldInput } from './bond-form';
+import { checkHasEnoughFunds, checkHasEnoughLockedTokens } from '../../utils';
 
 export interface Props {
   nodeType: NodeType;
@@ -23,25 +24,29 @@ export const AmountModal = ({ open, onClose, onSubmit, header, buttonText, nodeT
   const {
     control,
     setValue,
-    watch,
+    setError,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { errors },
   } = useForm<AmountData>({
     resolver: yupResolver(amountSchema),
     defaultValues: {
       tokenPool: 'balance',
+      profitMargin: 10,
     },
   });
 
   const { userBalance, clientDetails } = useContext(AppContext);
 
-  const onSubmitForm = (data: AmountData) => {
-    onSubmit(data);
-  };
+  const onSubmitForm = async (data: AmountData) => {
+    if (data.tokenPool === 'balance' && !(await checkHasEnoughFunds(data.amount.amount || ''))) {
+      return setError('amount.amount', { message: 'Not enough funds in wallet' });
+    }
 
-  console.log(watch('amount'));
-  console.log(isValid);
-  console.log(errors);
+    if (data.tokenPool === 'locked' && !(await checkHasEnoughLockedTokens(data.amount.amount || ''))) {
+      return setError('amount.amount', { message: 'Not enough locked tokens' });
+    }
+    return onSubmit(data);
+  };
 
   return (
     <SimpleModal
@@ -51,7 +56,6 @@ export const AmountModal = ({ open, onClose, onSubmit, header, buttonText, nodeT
       header={header || 'Bond'}
       subHeader="Step 2/2"
       okLabel={buttonText || 'Next'}
-      okDisabled={!isValid}
     >
       <form>
         {nodeType === 'mixnode' && (
@@ -62,6 +66,7 @@ export const AmountModal = ({ open, onClose, onSubmit, header, buttonText, nodeT
             label="Profit Margin"
             placeholder="Profit Margin"
             error={Boolean(errors.profitMargin)}
+            helperText={errors.profitMargin ? errors.profitMargin.message : 'Default is 10%'}
             required
             muiTextFieldProps={{ fullWidth: true }}
             sx={{ mb: 2.5 }}

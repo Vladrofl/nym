@@ -1,9 +1,10 @@
-import React, { useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { NymCard } from '../../components';
 import { NodeIdentityModal } from './NodeIdentityModal';
 import { ACTIONTYPE, BondState, FormStep } from './types';
 import { AmountModal } from './AmountModal';
+import { AppContext } from '../../context';
 
 const initialState: BondState = {
   showModal: false,
@@ -16,7 +17,7 @@ function reducer(state: BondState, action: ACTIONTYPE) {
     case 'change_bond_type':
       return { ...state, type: action.payload };
     case 'set_node_data':
-      return { ...state, identityData: action.payload };
+      return { ...state, nodeData: action.payload };
     case 'set_amount_data':
       return { ...state, amountData: action.payload };
     case 'set_step':
@@ -42,6 +43,12 @@ export const BondingCard = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { formStep, showModal } = state;
   console.log(state);
+
+  const { clientDetails } = useContext(AppContext);
+
+  useEffect(() => {
+    dispatch({ type: 'reset' });
+  }, [clientDetails]);
 
   return (
     <NymCard title="Bonding">
@@ -72,7 +79,7 @@ export const BondingCard = () => {
           onClose={() => dispatch({ type: 'reset' })}
           onSubmit={async (data) => {
             dispatch({ type: 'set_node_data', payload: data });
-            // dispatch({ type: 'next_step' });
+            dispatch({ type: 'next_step' });
           }}
           header="Bond"
           buttonText="Next"
@@ -84,7 +91,7 @@ export const BondingCard = () => {
           onClose={() => dispatch({ type: 'reset' })}
           onSubmit={async (data) => {
             dispatch({ type: 'set_amount_data', payload: data });
-            // dispatch({ type: 'next_step' });
+            dispatch({ type: 'next_step' });
           }}
           header="Bond"
           buttonText="Next"

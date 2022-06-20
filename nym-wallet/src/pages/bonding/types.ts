@@ -23,6 +23,10 @@ export interface NodeData {
   location?: string;
   version: string;
   advancedOpt: boolean;
+  mixPort: number;
+  verlocPort: number;
+  clientsPort: number;
+  httpApiPort: number;
 }
 
 export interface AmountData {
