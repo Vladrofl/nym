@@ -54,6 +54,7 @@ pub struct DefaultNetworkDetails<'a> {
     coconut_bandwidth_contract_address: &'a str,
     multisig_contract_address: &'a str,
     rewarding_validator_address: &'a str,
+    statistics_service_url: &'a str,
     validators: Vec<ValidatorDetails>,
 }
 
@@ -67,6 +68,7 @@ static MAINNET_DEFAULTS: Lazy<DefaultNetworkDetails<'static>> =
         coconut_bandwidth_contract_address: mainnet::COCONUT_BANDWIDTH_CONTRACT_ADDRESS,
         multisig_contract_address: mainnet::MULTISIG_CONTRACT_ADDRESS,
         rewarding_validator_address: mainnet::REWARDING_VALIDATOR_ADDRESS,
+        statistics_service_url: mainnet::STATISTICS_SERVICE_DOMAIN_ADDRESS,
         validators: mainnet::validators(),
     });
 
@@ -80,6 +82,7 @@ static SANDBOX_DEFAULTS: Lazy<DefaultNetworkDetails<'static>> =
         coconut_bandwidth_contract_address: sandbox::COCONUT_BANDWIDTH_CONTRACT_ADDRESS,
         multisig_contract_address: sandbox::MULTISIG_CONTRACT_ADDRESS,
         rewarding_validator_address: sandbox::REWARDING_VALIDATOR_ADDRESS,
+        statistics_service_url: sandbox::STATISTICS_SERVICE_DOMAIN_ADDRESS,
         validators: sandbox::validators(),
     });
 
@@ -92,6 +95,7 @@ static QA_DEFAULTS: Lazy<DefaultNetworkDetails<'static>> = Lazy::new(|| DefaultN
     coconut_bandwidth_contract_address: qa::COCONUT_BANDWIDTH_CONTRACT_ADDRESS,
     multisig_contract_address: qa::MULTISIG_CONTRACT_ADDRESS,
     rewarding_validator_address: qa::REWARDING_VALIDATOR_ADDRESS,
+    statistics_service_url: qa::STATISTICS_SERVICE_DOMAIN_ADDRESS,
     validators: qa::validators(),
 });
 
@@ -130,6 +134,13 @@ impl ValidatorDetails {
             .as_ref()
             .map(|url| url.parse().expect("the provided api url is invalid!"))
     }
+}
+
+pub fn default_statistics_service_url() -> Url {
+    DEFAULT_NETWORK
+        .statistics_service_url()
+        .parse()
+        .expect("the provided statistics service url is invalid!")
 }
 
 pub fn default_nymd_endpoints() -> Vec<Url> {
@@ -199,7 +210,8 @@ pub const VALIDATOR_API_VERSION: &str = "v1";
 
 /// We'll be assuming a few more things, profit margin and cost function. Since we don't have relialable package measurement, we'll be using uptime. We'll also set the value of 1 Nym to 1 $, to be able to translate interval costs to Nyms. We'll also assume a cost of 40$ per interval(month), converting that to Nym at our 1$ rate translates to 40_000_000 uNyms
 // pub const DEFAULT_OPERATOR_INTERVAL_COST: u64 = 40_000_000; // 40$/(30 days) at 1 Nym == 1$
-pub const DEFAULT_OPERATOR_INTERVAL_COST: u64 = 55_556; // 40$/1hr at 1 Nym == 1$
+// pub const DEFAULT_OPERATOR_INTERVAL_COST: u64 = 55_556; // 40$/1hr at 1 Nym == 1$
+// pub const DEFAULT_OPERATOR_INTERVAL_COST: u64 = 9259; // 40$/1hr/6 at 1 Nym == 1$
 
 // TODO: is there a way to get this from the chain
 pub const TOTAL_SUPPLY: u128 = 1_000_000_000_000_000;
