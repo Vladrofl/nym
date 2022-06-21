@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Stack } from '@mui/material';
+import { Divider, Stack, Typography } from '@mui/material';
 import { SimpleModal } from '../../components/Modals/SimpleModal';
 import { AmountData, NodeType } from './types';
 import { CurrencyInput } from './bond-form/CurrencyInput';
@@ -87,6 +87,12 @@ export const AmountModal = ({ open, onClose, onSubmit, header, buttonText, nodeT
           />
         </Stack>
       </form>
+      <Stack direction="row" justifyContent="space-between" mt={3}>
+        <Typography fontWeight={600}>Account balance</Typography>
+        <Typography fontWeight={600}>{userBalance.balance?.printable_balance || 0}</Typography>
+      </Stack>
+      <Divider sx={{ my: 1 }} />
+      <Typography fontWeight={400}>Est. fee for this transaction will be cauculated in the next page</Typography>
     </SimpleModal>
   );
 };

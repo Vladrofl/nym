@@ -1,6 +1,6 @@
-import { MajorCurrencyAmount } from '@nymproject/types';
+import { MajorCurrencyAmount, TransactionExecuteResult } from '@nymproject/types';
 
-export type FormStep = 1 | 2 | 3;
+export type FormStep = 1 | 2 | 3 | 4;
 export type NodeType = 'mixnode' | 'gateway';
 
 export type ACTIONTYPE =
@@ -8,6 +8,7 @@ export type ACTIONTYPE =
   | { type: 'set_node_data'; payload: NodeData }
   | { type: 'set_amount_data'; payload: AmountData }
   | { type: 'set_step'; payload: FormStep }
+  | { type: 'set_tx'; payload: TransactionExecuteResult }
   | { type: 'next_step' }
   | { type: 'previous_step' }
   | { type: 'show_modal' }
@@ -40,4 +41,5 @@ export interface BondState {
   formStep: FormStep;
   nodeData?: NodeData;
   amountData?: AmountData;
+  tx?: TransactionExecuteResult;
 }
