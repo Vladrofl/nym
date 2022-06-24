@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
-import { IconButton, Typography } from '@mui/material';
+import { Button, IconButton, Typography } from '@mui/material';
 import { MoreVert } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { Link } from '@nymproject/react/link/Link';
 import { BondedMixnode } from '../../context';
+import { Node as NodeIcon } from '../../svg-icons/node';
 import { Cell, Header, NodeTable } from './NodeTable';
 import BondedNodeCard from './BondedNodeCard';
 
@@ -100,7 +101,26 @@ export const MixnodeCard = ({ mixnode }: { mixnode: BondedMixnode }) => {
     [mixnode, theme],
   );
   return (
-    <BondedNodeCard title="Monster node" identityKey={mixnode.key} status={mixnode.status}>
+    <BondedNodeCard
+      title="Monster node"
+      identityKey={mixnode.key}
+      status={mixnode.status}
+      action={
+        <Button
+          variant="text"
+          color="secondary"
+          sx={{
+            fontWeight: 500,
+            '& .MuiSvgIcon-root': {
+              fontSize: 14,
+            },
+          }}
+          startIcon={<NodeIcon />}
+        >
+          Node settings
+        </Button>
+      }
+    >
       <NodeTable headers={headers} cells={cells} />
       <Typography sx={{ mt: 2 }}>
         Check more stats of your node on the{' '}
