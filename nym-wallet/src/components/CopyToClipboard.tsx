@@ -44,7 +44,7 @@ export const CopyToClipboard = ({
             color: (theme) => (light ? theme.palette.common.white : theme.palette.nym.background.dark),
           }}
         >
-          {!copied ? <ContentCopy fontSize="small" /> : <Check color="success" />}
+          {!copied ? <ContentCopy sx={{ fontSize: 14 }} /> : <Check color="success" sx={{ fontSize: 14 }} />}
         </IconButton>
       </Tooltip>
     );

@@ -51,6 +51,17 @@ const darkMode: NymPaletteVariant = {
   nav: {
     background: '#FFFFFF',
   },
+  mixnodes: {
+    status: {
+      active: '#20D073',
+      standby: '#5FD7EF',
+    },
+  },
+  selectionChance: {
+    overModerate: '#20D073',
+    moderate: '#EBA53D',
+    underModerate: '#DA465B',
+  },
 };
 
 const lightMode: NymPaletteVariant = {
@@ -70,6 +81,17 @@ const lightMode: NymPaletteVariant = {
   },
   nav: {
     background: '#FFFFFF',
+  },
+  mixnodes: {
+    status: {
+      active: '#1CBB67',
+      standby: '#55C1D7',
+    },
+  },
+  selectionChance: {
+    overModerate: '#20D073',
+    moderate: '#EBA53D',
+    underModerate: '#DA465B',
   },
 };
 
