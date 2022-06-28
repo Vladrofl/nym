@@ -269,6 +269,13 @@ export const getDesignTokens = (mode: PaletteMode): ThemeOptions => {
           underline: 'none',
         },
       },
+      MuiDialogTitle: {
+        styleOverrides: {
+          root: {
+            fontWeight: 600,
+          },
+        },
+      },
     },
     palette,
   };
