@@ -15,7 +15,7 @@ import { SimpleDialog } from '../components';
 
 const initialState: BondState = {
   showModal: false,
-  formStep: 4,
+  formStep: 1,
 };
 
 function reducer(state: BondState, action: ACTIONTYPE) {

@@ -19,7 +19,7 @@ interface FormData {
   profitMargin: number;
 }
 
-const NodeSettingsModal = ({ open, onClose, onConfirm, estimatedOpReward, currentPm }: Props) => {
+const BondModal = ({ open, onClose, onConfirm, estimatedOpReward, currentPm }: Props) => {
   const {
     control,
     handleSubmit,
@@ -87,4 +87,4 @@ const NodeSettingsModal = ({ open, onClose, onConfirm, estimatedOpReward, curren
   );
 };
 
-export default NodeSettingsModal;
+export default BondModal;

@@ -1,12 +1,13 @@
 import React, { useMemo, useState } from 'react';
-import { Button, IconButton, Typography } from '@mui/material';
-import { MoreVert } from '@mui/icons-material';
+import { Button, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Link } from '@nymproject/react/link/Link';
 import { BondedMixnode } from '../../../context';
 import { Node as NodeIcon } from '../../../svg-icons/node';
 import { NodeTable, BondedNodeCard, Cell, Header } from '../components';
 import { NodeSettings } from './node-settings';
+import NodeMenu from './NodeMenu';
+import { MixnodeFlow } from './types';
 
 const headers: Header[] = [
   {
@@ -53,8 +54,9 @@ const headers: Header[] = [
 
 const MixnodeCard = ({ mixnode }: { mixnode: BondedMixnode }) => {
   const { stake, bond, stakeSaturation, profitMargin, nodeRewards, operatorRewards, delegators } = mixnode;
-  const [showNodeSettings, setShowNodeSettings] = useState<boolean>(false);
+  const [flow, setFlow] = useState<MixnodeFlow>(null);
   const theme = useTheme();
+
   const cells: Cell[] = useMemo(
     () => [
       {
@@ -88,11 +90,7 @@ const MixnodeCard = ({ mixnode }: { mixnode: BondedMixnode }) => {
         id: 'delegators-cell',
       },
       {
-        cell: (
-          <IconButton sx={{ fontSize: '1rem', padding: 0 }}>
-            <MoreVert fontSize="inherit" sx={{ color: 'text.primary' }} />
-          </IconButton>
-        ),
+        cell: <NodeMenu onFlowChange={(newFlow) => setFlow(newFlow)} />,
         id: 'menu-button-cell',
         align: 'center',
         size: 'small',
@@ -110,7 +108,7 @@ const MixnodeCard = ({ mixnode }: { mixnode: BondedMixnode }) => {
         <Button
           variant="text"
           color="secondary"
-          onClick={() => setShowNodeSettings(true)}
+          onClick={() => setFlow('nodeSettings')}
           sx={{
             fontWeight: 500,
             '& .MuiSvgIcon-root': {
@@ -130,7 +128,7 @@ const MixnodeCard = ({ mixnode }: { mixnode: BondedMixnode }) => {
           explorer
         </Link>
       </Typography>
-      <NodeSettings mixnode={mixnode} show={showNodeSettings} onClose={() => setShowNodeSettings(false)} />
+      <NodeSettings mixnode={mixnode} show={flow === 'nodeSettings'} onClose={() => setFlow(null)} />
     </BondedNodeCard>
   );
 };
