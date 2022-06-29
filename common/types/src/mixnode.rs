@@ -91,7 +91,7 @@ impl TryFrom<MixnetContractMixNodeBond> for MixNodeBond {
             total_delegation,
             owner,
             layer,
-            block_height,
+            bonding_height: block_height,
             mix_node,
             proxy,
             accumulated_rewards,
